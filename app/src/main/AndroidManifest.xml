@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.gd10_x_yyyy">
+    package="com.gd9_x_yyyy">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,9 +14,9 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Adapters.AdapterMahasiswa"
+            android:name="com.gd9_x_yyyy.Adapters.AdapterMahasiswa"
             tools:ignore="Instantiatable" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.gd9_x_yyyy.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

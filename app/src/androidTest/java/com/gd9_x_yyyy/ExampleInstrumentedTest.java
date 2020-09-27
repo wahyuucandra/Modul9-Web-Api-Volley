@@ -1,4 +1,4 @@
-package com.gd10_x_yyyy;
+package com.gd9_x_yyyy;
 
 import android.content.Context;
 

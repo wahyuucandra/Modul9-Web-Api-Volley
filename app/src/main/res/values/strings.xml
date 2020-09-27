@@ -1,6 +1,6 @@
 <resources>
     //Jangan lupa diganti disini
-    <string name="app_name">GD10_X_YYYY</string>
+    <string name="app_name">GD9_X_YYYY</string>
     <string name="nama">Wahyu Candra Buana</string>
     <string name="npm">170709246</string>
     <string name="kelas">B</string>

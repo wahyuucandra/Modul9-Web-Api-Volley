@@ -1,4 +1,4 @@
-package com.gd10_x_yyyy.Adapters;
+package com.gd9_x_yyyy.Adapters;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,10 +27,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.gd10_x_yyyy.Models.Mahasiswa;
-import com.gd10_x_yyyy.R;
-import com.gd10_x_yyyy.Views.TambahEdit;
-import com.gd10_x_yyyy.Views.ViewsMahasiswa;
+import com.gd9_x_yyyy.Models.Mahasiswa;
+import com.gd9_x_yyyy.R;
+import com.gd9_x_yyyy.Views.TambahEdit;
+import com.gd9_x_yyyy.Views.ViewsMahasiswa;
 
 import org.json.JSONException;
 import org.json.JSONObject;

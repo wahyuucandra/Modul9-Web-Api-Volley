@@ -1,4 +1,4 @@
-package com.gd9_x_yyyy.Adapters;
+package com.ugd9_x_yyyy.Adapters;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,10 +27,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.gd9_x_yyyy.Models.Mahasiswa;
-import com.gd9_x_yyyy.R;
-import com.gd9_x_yyyy.Views.TambahEdit;
-import com.gd9_x_yyyy.Views.ViewsMahasiswa;
+import com.ugd9_x_yyyy.Models.Mahasiswa;
+import com.ugd9_x_yyyy.R;
+import com.ugd9_x_yyyy.Views.TambahEditMahasiswa;
+import com.ugd9_x_yyyy.Views.ViewsMahasiswa;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,9 +83,9 @@ public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adap
                 Bundle data = new Bundle();
                 data.putSerializable("mahasiswa", mahasiswa);
                 data.putString("status", "edit");
-                TambahEdit tambahEdit = new TambahEdit();
-                tambahEdit.setArguments(data);
-                loadFragment(tambahEdit);
+                TambahEditMahasiswa tambahEditMahasiswa = new TambahEditMahasiswa();
+                tambahEditMahasiswa.setArguments(data);
+                loadFragment(tambahEditMahasiswa);
             }
         });
 
@@ -214,7 +214,7 @@ public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adap
         AppCompatActivity activity = (AppCompatActivity) view.getContext();
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.views_mahasiswa_fragment,fragment)
+        fragmentTransaction.replace(R.id.frame_view_mahasiswa,fragment)
                 .addToBackStack(null)
                 .commit();
     }

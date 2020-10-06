@@ -1,4 +1,4 @@
-package com.gd9_x_yyyy.Views;
+package com.ugd9_x_yyyy.Views;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,8 +26,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.gd9_x_yyyy.Models.Mahasiswa;
-import com.gd9_x_yyyy.R;
+import com.ugd9_x_yyyy.Models.Mahasiswa;
+import com.ugd9_x_yyyy.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
@@ -37,7 +39,7 @@ import java.util.Map;
 import static com.android.volley.Request.Method.POST;
 
 
-public class TambahEdit extends Fragment {
+public class TambahEditMahasiswa extends Fragment {
 
     private final String url = "https://asdospbp2020.000webhostapp.com/api/mahasiswa";
     private TextInputEditText txtNpm, txtNama;
@@ -49,8 +51,8 @@ public class TambahEdit extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tambah_edit, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_tambah_edit_mahasiswa, container, false);
+        setHasOptionsMenu(true);
         setAtribut(view);
 
         btnSimpan.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +86,14 @@ public class TambahEdit extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem add    = menu.findItem(R.id.btnAdd);
+        MenuItem search = menu.findItem(R.id.btnSearch);
+        add.setVisible(false);
+        search.setVisible(false);
     }
 
     public void setAtribut(View view){
@@ -291,13 +301,13 @@ public class TambahEdit extends Fragment {
 
     public void closeFragment(){
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.hide(TambahEdit.this).commit();
+        transaction.hide(TambahEditMahasiswa.this).commit();
     }
 
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.tambah_edit_fragment,fragment)
+        fragmentTransaction.replace(R.id.frame_tambah_edit_mahasiswa,fragment)
                 .addToBackStack(null)
                 .commit();
     }

@@ -1,4 +1,4 @@
-package com.gd9_x_yyyy.SwipeMenu;
+package com.ugd9_x_yyyy.SwipeMenu;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
 
-import com.gd9_x_yyyy.R;
+import com.ugd9_x_yyyy.R;
 
 import java.util.ArrayList;
 
-import static com.gd9_x_yyyy.SwipeMenu.State.CLOSE;
+import static com.ugd9_x_yyyy.SwipeMenu.State.CLOSE;
 
 public class EasySwipeMenuLayout extends ViewGroup {
     private static final String TAG = "EasySwipeMenuLayout";

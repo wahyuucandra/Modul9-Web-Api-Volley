@@ -1,4 +1,4 @@
-package com.gd9_x_yyyy;
+package com.ugd9_x_yyyy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,7 +18,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.gd9_x_yyyy.Views.ViewsMahasiswa;
+import com.ugd9_x_yyyy.Views.ViewsBuku;
+import com.ugd9_x_yyyy.Views.ViewsCart;
+import com.ugd9_x_yyyy.Views.ViewsMahasiswa;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -73,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
                         loadFragment(new ViewsMahasiswa());
                         break;
                     case R.id.buku :
-
+                        loadFragment(new ViewsBuku());
                         break;
                     case R.id.transaksi :
-
+                        loadFragment(new ViewsCart());
                         break;
                     case R.id.keluar :
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -124,5 +126,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {}
+    public void onBackPressed() { }
 }

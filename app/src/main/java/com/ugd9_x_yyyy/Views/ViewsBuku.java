@@ -1,6 +1,6 @@
-package com.gd9_x_yyyy.Views;
+package com.ugd9_x_yyyy.Views;
 
-import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,19 +13,19 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.gd9_x_yyyy.Adapters.AdapterMahasiswa;
-import com.gd9_x_yyyy.Models.Mahasiswa;
-import com.gd9_x_yyyy.R;
+import com.ugd9_x_yyyy.Adapters.AdapterBuku;
+import com.ugd9_x_yyyy.Models.Buku;
+import com.ugd9_x_yyyy.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,30 +36,28 @@ import java.util.List;
 
 import static com.android.volley.Request.Method.GET;
 
+public class ViewsBuku extends Fragment{
 
-public class ViewsMahasiswa extends Fragment {
-
-    private final String url = "https://asdospbp2020.000webhostapp.com/api/mahasiswa";
+    private final String url = "https://asdospbp2020.000webhostapp.com/api/buku";
     private RecyclerView recyclerView;
-    private AdapterMahasiswa adapter;
-    private List<Mahasiswa> listMahasiswa;
+    private AdapterBuku adapter;
+    private List<Buku> listBuku;
     private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_views_mahasiswa, container, false);
+        view = inflater.inflate(R.layout.fragment_views_buku, container, false);
         setHasOptionsMenu(true);
-
         setAdapter();
-        getMahasiswa();
+        getBuku();
 
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_bar, menu);
+        inflater.inflate(R.menu.menu_bar_buku, menu);
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem searchItem = menu.findItem(R.id.btnSearch);
@@ -85,67 +83,60 @@ public class ViewsMahasiswa extends Fragment {
         if (id == R.id.btnAdd) {
             Bundle data = new Bundle();
             data.putString("status", "tambah");
-            TambahEdit tambahEdit = new TambahEdit();
-            tambahEdit.setArguments(data);
+            TambahEditBuku tambahEditBuku = new TambahEditBuku();
+            tambahEditBuku.setArguments(data);
 
-            loadFragment(tambahEdit);
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager .beginTransaction()
+                    .replace(R.id.frame_view_buku, tambahEditBuku)
+                    .commit();
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void setAdapter(){
-        getActivity().setTitle("Data Mahasiswa");
-        listMahasiswa = new ArrayList<Mahasiswa>();
+        getActivity().setTitle("Data Buku");
+        listBuku = new ArrayList<Buku>();
         recyclerView = view.findViewById(R.id.recycler_view);
-        adapter = new AdapterMahasiswa(view.getContext(), listMahasiswa);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        adapter = new AdapterBuku(view.getContext(), listBuku);
+        GridLayoutManager gridLayoutManager;
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            gridLayoutManager = new GridLayoutManager(view.getContext(),4);
+        } else {
+            gridLayoutManager = new GridLayoutManager(view.getContext(),2);
+        }
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
 
-    //Fungsi menampilkan data mahasiswa
-    public void getMahasiswa() {
-        //Pendeklarasian queue
+    public void getBuku() {
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
         //Meminta tanggapan string dari URL yang telah disediakan menggunakan method GET
-        //untuk request ini tidak memerlukan parameter
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(view.getContext());
-        progressDialog.setMessage("loading....");
-        progressDialog.setTitle("Menampilkan data mahasiswa");
-        progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
-
         final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, url
                 , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
-                progressDialog.dismiss();
                 try {
-                    //Mengambil data response json object yang berupa data mahasiswa
-                    JSONArray jsonArray = response.getJSONArray("mahasiswa");
+                    JSONArray jsonArray = response.getJSONArray("dataBuku");
 
-                    if(!listMahasiswa.isEmpty())
-                        listMahasiswa.clear();
+                    if(!listBuku.isEmpty())
+                        listBuku.clear();
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         //Mengubah data jsonArray tertentu menjadi json Object
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
-                        String npm              = jsonObject.optString("npm");
-                        String nama             = jsonObject.optString("nama");
-                        String jenis_kelamin    = jsonObject.optString("jenis_kelamin");
-                        String prodi            = jsonObject.optString("prodi");
-                        String gambar           = jsonObject.optString("gambar");
+                        int idBuku          = Integer.parseInt(jsonObject.optString("idBuku"));
+                        String namaBuku     = jsonObject.optString("namaBuku");
+                        String pengarang    = jsonObject.optString("pengarang");
+                        Double harga        = Double.parseDouble(jsonObject.optString("harga"));
+                        String gambar       = jsonObject.optString("gambar");
 
-                        //Membuat objek user
-                        Mahasiswa mahasiswa = new Mahasiswa(npm, nama, jenis_kelamin, prodi, gambar);
-
-                        //Menambahkan objek user tadi ke list user
-                        listMahasiswa.add(mahasiswa);
+                        //Menambahkan objek buku ke listBuku
+                        listBuku.add(new Buku(idBuku, namaBuku, pengarang, harga, gambar));
                     }
                     adapter.notifyDataSetChanged();
                 }catch (JSONException e){
@@ -157,24 +148,11 @@ public class ViewsMahasiswa extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Disini bagian jika response jaringan terdapat ganguan/error
-                progressDialog.dismiss();
                 Toast.makeText(view.getContext(), error.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });
 
-        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
         queue.add(stringRequest);
-    }
-
-    public void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.views_mahasiswa_fragment,fragment)
-                .detach(this)
-                .attach(this)
-                .addToBackStack(null)
-                .commit();
     }
 }

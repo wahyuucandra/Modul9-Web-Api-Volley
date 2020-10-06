@@ -1,4 +1,4 @@
-package com.gd9_x_yyyy.Models;
+package com.ugd9_x_yyyy.Models;
 
 import java.io.Serializable;
 

@@ -209,7 +209,16 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
         };
     }
 
+    public void loadFragment(Fragment fragment) {
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_view_buku,fragment)
+                .commit();
+    }
+
     public void deleteBuku(int idBuku){
+        //Silahkan buat fungsi hapus disini
         RequestQueue queue = Volley.newRequestQueue(context);
         String urlDelete = "https://asdospbp2020.000webhostapp.com/api/buku/delete/" + idBuku;
 
@@ -242,13 +251,5 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
         });
 
         queue.add(stringRequest);
-    }
-
-    public void loadFragment(Fragment fragment) {
-        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_view_buku,fragment)
-                .commit();
     }
 }

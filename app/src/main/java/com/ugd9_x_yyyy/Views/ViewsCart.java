@@ -3,6 +3,7 @@ package com.ugd9_x_yyyy.Views;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -61,6 +62,14 @@ public class ViewsCart extends Fragment{
         setAttribut();
 
         return view;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem add    = menu.findItem(R.id.btnAdd);
+        MenuItem search = menu.findItem(R.id.btnSearch);
+        add.setVisible(false);
+        search.setVisible(false);
     }
 
     private void init() {
@@ -171,6 +180,7 @@ public class ViewsCart extends Fragment{
     }
 
     public void getTransaksi() {
+        // Untuk Bonus Silahkan Get Data Transaksi disini
         final RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
         final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, url

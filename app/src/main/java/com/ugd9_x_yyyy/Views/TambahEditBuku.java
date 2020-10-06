@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -255,7 +256,20 @@ public class TambahEditBuku extends Fragment {
         }
     }
 
+    public void closeFragment(){
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.hide(TambahEditBuku.this).commit();
+    }
+
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_tambah_edit_buku,fragment)
+                .commit();
+    }
+
     private String imageToString(Bitmap bitmap){
+        //Carilah fungsi yang digunakan untuk mengubah data image menjadi string mengunakan base64
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
         byte[] imageBytes = outputStream.toByteArray();
@@ -265,6 +279,7 @@ public class TambahEditBuku extends Fragment {
     }
 
     public void tambahBuku(final Buku buku){
+        //Silahkan buat fungsi tambah buku disini
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         final ProgressDialog progressDialog;
@@ -318,8 +333,8 @@ public class TambahEditBuku extends Fragment {
         queue.add(stringRequest);
     }
 
-    public void editBuku(final Buku buku, int idBuku)
-    {
+    public void editBuku(final Buku buku, int idBuku) {
+        //Silahkan buat fungsi edit buku disini
         RequestQueue queue = Volley.newRequestQueue(getContext());
         String urlUpdate = url + "/update/" + idBuku;
 
@@ -371,17 +386,5 @@ public class TambahEditBuku extends Fragment {
         };
 
         queue.add(stringRequest);
-    }
-
-    public void closeFragment(){
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.hide(TambahEditBuku.this).commit();
-    }
-
-    public void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_tambah_edit_buku,fragment)
-                .commit();
     }
 }

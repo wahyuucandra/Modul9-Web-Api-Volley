@@ -96,6 +96,7 @@ public class ViewsBuku extends Fragment{
 
     public void setAdapter(){
         getActivity().setTitle("Data Buku");
+        // Buatlah adapter disini
         listBuku = new ArrayList<Buku>();
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter = new AdapterBuku(view.getContext(), listBuku);
@@ -112,6 +113,7 @@ public class ViewsBuku extends Fragment{
     }
 
     public void getBuku() {
+        // Silahkan buat fungsi menampilkan data Buku disini
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
         //Meminta tanggapan string dari URL yang telah disediakan menggunakan method GET

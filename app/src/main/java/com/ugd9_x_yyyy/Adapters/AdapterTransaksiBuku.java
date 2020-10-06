@@ -89,7 +89,7 @@ public class AdapterTransaksiBuku extends RecyclerView.Adapter<AdapterTransaksiB
                     holder.checkBox.setChecked(false);
 
                 NumberFormat formatter = new DecimalFormat("#,###");
-                holder.tvNamaMahasiswa.setText(transaksiBuku.getNamaMahasiswa());
+                holder.tvNamaMahasiswa.setText(transaksiBuku.getNamaToko());
                 holder.tvSubtotal.setText("Rp "+ formatter.format(total));
 
                 transaksiBukuList.get(position).setTotalBiaya(total);

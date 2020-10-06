@@ -187,10 +187,10 @@ public class ViewsCart extends Fragment{
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
                         String noTransaksi  = jsonObject.optString("noTransaksi");
-                        String npm          = jsonObject.optString("npm");
+                        int idToko          = Integer.parseInt(jsonObject.optString("idToko"));
                         String tglTransaksi = jsonObject.optString("tglTransaksi");
                         Double totalBiaya   = Double.parseDouble(jsonObject.optString("totalBiaya"));
-                        String namaMhs      = jsonObject.optString("nama");
+                        String namaToko      = jsonObject.optString("namaToko");
 
                         JSONArray jsonArrays = jsonObject.optJSONArray("dtbuku");
 
@@ -211,7 +211,7 @@ public class ViewsCart extends Fragment{
                         }
 
                         transaksiBukuList.add(
-                                new TransaksiBuku(noTransaksi, npm, tglTransaksi, totalBiaya, namaMhs, listDTBuku));
+                                new TransaksiBuku(noTransaksi, idToko, tglTransaksi, totalBiaya, namaToko, listDTBuku));
                     }
                     adapter.notifyDataSetChanged();
                 }catch (JSONException e){

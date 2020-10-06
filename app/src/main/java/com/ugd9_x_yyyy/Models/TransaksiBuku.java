@@ -4,28 +4,29 @@ import java.io.Serializable;
 import java.util.List;
 
 public class TransaksiBuku implements Serializable {
-    private String noTransaksi, npm, tglTransaksi, namaMahasiswa;
+    private String noTransaksi, tglTransaksi, namaToko;
+    private Integer idToko;
     private Double totalBiaya;
     private List<DTBuku> dtBukuList;
     public Boolean isChecked = false;
 
-    public TransaksiBuku (String noTransaksi, String npm, String tglTransaksi,
-                          Double totalBiaya, String namaMahasiswa, List<DTBuku> dtBukuList){
+    public TransaksiBuku (String noTransaksi, int idToko, String tglTransaksi,
+                          Double totalBiaya, String namaToko, List<DTBuku> dtBukuList){
         this.noTransaksi    = noTransaksi;
-        this.npm            = npm;
+        this.idToko            = idToko;
         this.tglTransaksi   = tglTransaksi;
         this.totalBiaya     = totalBiaya;
-        this.namaMahasiswa  = namaMahasiswa;
+        this.namaToko = namaToko;
         this.dtBukuList     = dtBukuList;
     }
 
-    public TransaksiBuku (String npm, Double totalBiaya){
-        this.npm = npm;
+    public TransaksiBuku (int idToko, Double totalBiaya){
+        this.idToko = idToko;
         this.totalBiaya = totalBiaya;
     }
 
-    public String getNamaMahasiswa() {
-        return namaMahasiswa;
+    public String getNamaToko() {
+        return namaToko;
     }
 
     public String getNoTransaksi() {
@@ -36,8 +37,8 @@ public class TransaksiBuku implements Serializable {
         return totalBiaya;
     }
 
-    public String getNpm() {
-        return npm;
+    public int getIdToko() {
+        return idToko;
     }
 
     public String getTglTransaksi() {

@@ -33,8 +33,6 @@ public class AdapterTransaksiBuku extends RecyclerView.Adapter<AdapterTransaksiB
     private Double totalBiaya, subTotal;
     private OnQuantityChangeListener mListener;
 
-    public AdapterTransaksiBuku(){};
-
     public AdapterTransaksiBuku(Context context, List<TransaksiBuku> transaksiBukuList,
                                 OnQuantityChangeListener mListener) {
         this.context            = context;
@@ -71,6 +69,37 @@ public class AdapterTransaksiBuku extends RecyclerView.Adapter<AdapterTransaksiB
             holder.panelBayar.setVisibility(View.VISIBLE);
         }
 
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    transaksiBukuList.get(position).isChecked = true;
+
+                    if(subTotal == 0.0 || isEmptyChildChecked(transaksiBuku)){
+                        for(int i=0; i<transaksiBukuList.get(position).getDtBukuList().size(); i++){
+                            transaksiBukuList.get(position).getDtBukuList().get(i).isChecked = true;
+                        }
+                    }
+                    holder.panelBayar.setVisibility(View.GONE);
+
+                } else {
+                    transaksiBukuList.get(position).isChecked = false;
+                    for(int i=0; i<transaksiBukuList.get(position).getDtBukuList().size(); i++){
+                        transaksiBukuList.get(position).getDtBukuList().get(i).isChecked = false;
+                    }
+
+                    holder.panelBayar.setVisibility(View.VISIBLE);
+                }
+
+                holder.recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 holder.recyclerView.getContext(),
                 LinearLayoutManager.VERTICAL,
@@ -93,46 +122,16 @@ public class AdapterTransaksiBuku extends RecyclerView.Adapter<AdapterTransaksiB
                 holder.tvSubtotal.setText("Rp "+ formatter.format(total));
 
                 transaksiBukuList.get(position).setTotalBiaya(total);
-                mListener.onQuantityChange(hitungSubTotal(transaksiBukuList), total);
+                mListener.onQuantityChange(
+                        hitungSubTotal(transaksiBukuList),
+                        total,
+                        isFullChecked(),
+                        isEmptyChecked());
             }
         });
         holder.recyclerView.setLayoutManager(layoutManager);
         holder.recyclerView.setItemAnimator(new DefaultItemAnimator());
         holder.recyclerView.setAdapter(adapterDTBuku);
-
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    transaksiBukuList.get(position).isChecked = true;
-
-                    if(subTotal == 0.0){
-                        for(int i=0; i<transaksiBukuList.get(position).getDtBukuList().size(); i++){
-                            transaksiBukuList.get(position).getDtBukuList().get(i).isChecked = true;
-                        }
-                    }
-                    holder.panelBayar.setVisibility(View.GONE);
-
-                } else {
-                    transaksiBukuList.get(position).isChecked = false;
-
-                    if(subTotal == 0.0){
-                        for(int i=0; i<transaksiBukuList.get(position).getDtBukuList().size(); i++){
-                            transaksiBukuList.get(position).getDtBukuList().get(i).isChecked = false;
-                        }
-                    }
-
-                    holder.panelBayar.setVisibility(View.VISIBLE);
-                }
-
-                holder.recyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        notifyDataSetChanged();
-                    }
-                });
-            }
-        });
     }
 
     @Override
@@ -161,7 +160,7 @@ public class AdapterTransaksiBuku extends RecyclerView.Adapter<AdapterTransaksiB
     }
 
     public interface OnQuantityChangeListener {
-        void onQuantityChange( Double totalBiaya, Double subTotal);
+        void onQuantityChange( Double totalBiaya, Double subTotal, Boolean full, Boolean empty);
     }
 
     public Double hitungSubTotal(List<TransaksiBuku> transaksiBukus)
@@ -185,4 +184,41 @@ public class AdapterTransaksiBuku extends RecyclerView.Adapter<AdapterTransaksiB
         return false;
     }
 
+    public Boolean isFullChecked(){
+        for (TransaksiBuku tb : transaksiBukuList) {
+            if(!tb.isChecked)
+                return false;
+            else
+            {
+                for (DTBuku dtb : tb.getDtBukuList()) {
+                    if(!dtb.isChecked)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public Boolean isEmptyChecked(){
+        for (TransaksiBuku tb : transaksiBukuList) {
+            if(tb.isChecked)
+                return false;
+            else
+            {
+                for (DTBuku dtb : tb.getDtBukuList()) {
+                    if(dtb.isChecked)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public Boolean isEmptyChildChecked(TransaksiBuku tb){
+        for (DTBuku dtb : tb.getDtBukuList()) {
+            if(dtb.isChecked)
+                return false;
+        }
+        return true;
+    }
 }

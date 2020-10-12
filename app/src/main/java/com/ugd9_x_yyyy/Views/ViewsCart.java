@@ -50,6 +50,7 @@ public class ViewsCart extends Fragment{
     private AdapterTransaksiBuku adapter;
     private List<TransaksiBuku> transaksiBukuList;
     private View view;
+    public Boolean isFullChecked;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,7 +96,7 @@ public class ViewsCart extends Fragment{
                 else
                 {
                     setVisiblePanelBayar(View.GONE);
-                    if(isFullChecked())
+                    if(isFullChecked)
                         setChecked(false);
                 }
                 recyclerView.post(new Runnable() {
@@ -111,21 +112,23 @@ public class ViewsCart extends Fragment{
     public void setAdapter(){
         getActivity().setTitle("Cart");
         transaksiBukuList = new ArrayList<>();
-        adapter = new AdapterTransaksiBuku(view.getContext(), transaksiBukuList, new AdapterTransaksiBuku.OnQuantityChangeListener() {
-            @Override
-            public void onQuantityChange(Double totalBiaya, Double subTotal) {
-                if(!isEmptyChecked()){
-                    setVisiblePanelBayar(View.VISIBLE);
-                    NumberFormat formatter = new DecimalFormat("#,###");
-                    tvTotalBiaya.setText("Rp "+ formatter.format(totalBiaya));
-                }
+        adapter = new AdapterTransaksiBuku(view.getContext(), transaksiBukuList,
+                new AdapterTransaksiBuku.OnQuantityChangeListener() {
+                    @Override
+                    public void onQuantityChange(Double totalBiaya, Double subTotal, Boolean full, Boolean empty) {
+                        isFullChecked = full;
+                        if(!empty){
+                            setVisiblePanelBayar(View.VISIBLE);
+                            NumberFormat formatter = new DecimalFormat("#,###");
+                            tvTotalBiaya.setText("Rp "+ formatter.format(totalBiaya));
+                        }
 
-                if(isFullChecked())
-                    checkBox.setChecked(true);
-                else
-                    checkBox.setChecked(false);
-            }
-        });
+                        if(full)
+                            checkBox.setChecked(true);
+                        else
+                            checkBox.setChecked(false);
+                    }
+                });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -141,36 +144,6 @@ public class ViewsCart extends Fragment{
         }
     }
 
-    public Boolean isFullChecked(){
-        for (TransaksiBuku tb : transaksiBukuList) {
-            if(!tb.isChecked)
-                return false;
-            else
-            {
-                for (DTBuku dtb : tb.getDtBukuList()) {
-                    if(!dtb.isChecked)
-                        return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public Boolean isEmptyChecked(){
-        for (TransaksiBuku tb : transaksiBukuList) {
-            if(tb.isChecked)
-                return false;
-            else
-            {
-                for (DTBuku dtb : tb.getDtBukuList()) {
-                    if(dtb.isChecked)
-                        return false;
-                }
-            }
-        }
-        return true;
-    }
-
     public void setVisiblePanelBayar(int visible){
         panelBayar.setVisibility(visible);
         if(visible == View.VISIBLE)
@@ -180,7 +153,6 @@ public class ViewsCart extends Fragment{
     }
 
     public void getTransaksi() {
-        // Untuk Bonus Silahkan Get Data Transaksi disini
         final RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
         final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, url

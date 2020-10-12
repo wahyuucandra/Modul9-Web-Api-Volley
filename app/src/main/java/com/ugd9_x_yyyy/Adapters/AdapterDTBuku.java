@@ -164,7 +164,6 @@ public class AdapterDTBuku extends RecyclerView.Adapter<AdapterDTBuku.adapterSub
                 else {
                     listDTBuku.get(position).isChecked = false;
                 }
-                //notifyDataSetChanged();
                 mListener.onQuantityChange(totalBiaya, hitungSubTotal(listDTBuku));
             }
         });
@@ -208,13 +207,5 @@ public class AdapterDTBuku extends RecyclerView.Adapter<AdapterDTBuku.adapterSub
                 subTotal += (dt.getJumlah()*dt.getHarga());
         }
         return subTotal;
-    }
-
-    public void loadFragment(Fragment fragment) {
-        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_view_cart,fragment)
-                .commit();
     }
 }

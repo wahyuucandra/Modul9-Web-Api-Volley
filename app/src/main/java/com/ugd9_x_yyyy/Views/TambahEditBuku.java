@@ -70,6 +70,8 @@ public class TambahEditBuku extends Fragment {
     private Uri selectedImage = null;
     private static final int PERMISSION_CODE = 1000;
 
+    public TambahEditBuku(){}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,14 +81,6 @@ public class TambahEditBuku extends Fragment {
         setAttribut();
 
         return view;
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem add    = menu.findItem(R.id.btnAdd);
-        MenuItem search = menu.findItem(R.id.btnSearch);
-        add.setVisible(false);
-        search.setVisible(false);
     }
 
     public void init(){
@@ -265,6 +259,7 @@ public class TambahEditBuku extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_tambah_edit_buku,fragment)
+                .addToBackStack(null)
                 .commit();
     }
 

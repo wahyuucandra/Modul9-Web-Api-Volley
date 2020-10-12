@@ -88,14 +88,6 @@ public class TambahEditMahasiswa extends Fragment {
         return view;
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem add    = menu.findItem(R.id.btnAdd);
-        MenuItem search = menu.findItem(R.id.btnSearch);
-        add.setVisible(false);
-        search.setVisible(false);
-    }
-
     public void setAtribut(View view){
         mahasiswa   = (Mahasiswa) getArguments().getSerializable("mahasiswa");
         txtNpm      = view.findViewById(R.id.txtNpm);

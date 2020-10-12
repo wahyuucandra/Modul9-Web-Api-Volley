@@ -100,8 +100,14 @@ public class ViewsMahasiswa extends Fragment {
         listMahasiswa = new ArrayList<Mahasiswa>();
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter = new AdapterMahasiswa(view.getContext(), listMahasiswa);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
+            recyclerView.setLayoutManager(layoutManager);
+        } else {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),2);
+            recyclerView.setLayoutManager(gridLayoutManager);
+        }
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }

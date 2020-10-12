@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,6 +90,7 @@ public class ViewsBuku extends Fragment{
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager .beginTransaction()
                     .replace(R.id.frame_view_buku, tambahEditBuku)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         }
         return super.onOptionsItemSelected(item);
@@ -96,7 +98,6 @@ public class ViewsBuku extends Fragment{
 
     public void setAdapter(){
         getActivity().setTitle("Data Buku");
-        // Buatlah adapter disini
         listBuku = new ArrayList<Buku>();
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter = new AdapterBuku(view.getContext(), listBuku);

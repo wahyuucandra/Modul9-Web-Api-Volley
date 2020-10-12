@@ -21,7 +21,6 @@
 
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="text">~ PBP Itu Tidak Sulit, Hanya Perlu di Mengerti ~</string>
 
 
     <dimen name="panel_height">570dp</dimen>

@@ -33,8 +33,6 @@ import com.ugd9_x_yyyy.Models.Buku;
 import com.ugd9_x_yyyy.R;
 import com.ugd9_x_yyyy.Views.TambahEditBuku;
 import com.ugd9_x_yyyy.Views.ViewsBuku;
-import com.ugd9_x_yyyy.Views.ZoomImage;
-import com.zolad.zoominimageview.ZoomInImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,9 +53,9 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
     private View view;
 
     public AdapterBuku(Context context, List<Buku> bukuList) {
-        this.context=context;
-        this.bukuList = bukuList;
-        this.bukuListFiltered = bukuList;
+        this.context            = context;
+        this.bukuList           = bukuList;
+        this.bukuListFiltered   = bukuList;
     }
 
     @NonNull
@@ -82,81 +80,41 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
                 .skipMemoryCache(true)
                 .into(holder.ivGambar);
 
-        holder.cardBuku.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
-                View views = layoutInflater.inflate(R.layout.pilih_aksi, null);
-
-                final AlertDialog alertD = new AlertDialog.Builder(view.getContext()).create();
-
-                Button btnEdit      = views.findViewById(R.id.btnEdit);
-                Button btnHapus     = views.findViewById(R.id.btnHapus);
-                ImageView ivBack    = views.findViewById(R.id.ivBack);
-
-                btnEdit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertD.dismiss();
-                        AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                        Bundle data = new Bundle();
-                        data.putSerializable("buku", buku);
-                        data.putString("status", "edit");
-                        TambahEditBuku tambahEditBuku = new TambahEditBuku();
-                        tambahEditBuku.setArguments(data);
-                        loadFragment(tambahEditBuku);
-                    }
-                });
-
-                btnHapus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertD.dismiss();
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setMessage("Anda yakin ingin menghapus buku ?");
-                        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                deleteBuku(buku.getIdBuku());
-
-                            }
-                        });
-                        builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                                alertD.show();
-                            }
-                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                    }
-                });
-
-                ivBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertD.dismiss();
-                    }
-                });
-
-                alertD.setView(views);
-                alertD.show();
-            }
-        });
-
-        holder.ivGambar.setOnClickListener(new View.OnClickListener() {
+        holder.ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 Bundle data = new Bundle();
                 data.putSerializable("buku", buku);
-                ZoomImage zoomImage = new ZoomImage();
-                zoomImage.setArguments(data);
-                loadFragment(zoomImage);
+                data.putString("status", "edit");
+                TambahEditBuku tambahEditBuku = new TambahEditBuku();
+                tambahEditBuku.setArguments(data);
+                loadFragment(tambahEditBuku);
             }
         });
 
+        holder.ivHapus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Anda yakin ingin menghapus buku ?");
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteBuku(buku.getIdBuku());
+
+                    }
+                });
+                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 
     @Override
@@ -165,7 +123,7 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
     }
 
     public class adapterBukuViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtNama, txtPengarang, txtHarga;
+        private TextView txtNama, txtPengarang, txtHarga, ivEdit, ivHapus;;
         private ImageView ivGambar;
         private CardView cardBuku;
 
@@ -175,6 +133,8 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
             txtPengarang    = itemView.findViewById(R.id.tvPengarang);
             txtHarga        = itemView.findViewById(R.id.tvHarga);
             ivGambar        = itemView.findViewById(R.id.ivGambar);
+            ivEdit          = (TextView) itemView.findViewById(R.id.ivEdit);
+            ivHapus         = (TextView) itemView.findViewById(R.id.ivHapus);
             cardBuku        = itemView.findViewById(R.id.cardBuku);
         }
     }

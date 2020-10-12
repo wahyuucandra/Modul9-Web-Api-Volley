@@ -15,19 +15,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:background="#240E43"
-                android:padding="10dp"
-                android:shadowColor="#000000"
-                android:text="@string/text"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="28sp" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:shadowColor="#000000"

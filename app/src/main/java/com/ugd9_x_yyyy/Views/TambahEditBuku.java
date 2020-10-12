@@ -244,10 +244,7 @@ public class TambahEditBuku extends Fragment {
             bitmap = (Bitmap) extras.get("data");
             ivGambar.setImageBitmap(bitmap);
         }
-        else
-        {
-            bitmap = null;
-        }
+        bitmap = getResizedBitmap(bitmap, 200);
     }
 
     public void closeFragment(){
@@ -261,6 +258,21 @@ public class TambahEditBuku extends Fragment {
         fragmentTransaction.replace(R.id.frame_tambah_edit_buku,fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
     private String imageToString(Bitmap bitmap){
@@ -294,7 +306,6 @@ public class TambahEditBuku extends Fragment {
                     {
                         loadFragment(new ViewsBuku());
                     }
-
                     Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -317,6 +328,7 @@ public class TambahEditBuku extends Fragment {
 
                 if(bitmap != null){
                     String imageData = imageToString(bitmap);
+                    System.out.println(imageData);
                     params.put("gambar", imageData);
                 }
 

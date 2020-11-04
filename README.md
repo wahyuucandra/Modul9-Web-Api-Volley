@@ -23,10 +23,10 @@ Penilaian Unguided
 
 Minus :	
 
-[-5 ] Tidak Mengganti nama, npm, kelas pada kelas string.h	
+- Tidak Mengganti nama, npm, kelas pada kelas string.h	            [-5 ] 
 
-[-100] Jika tidak mengumpul di sitkul atau mencontek teman	
+- Jika tidak mengumpul di sitkul atau mencontek teman	               [-100]
 
-[Total Nilai / 2 ] Jika tidak melakukan video call / demo untuk pengecekan Unguided
+- Jika tidak melakukan video call / demo untuk pengecekan Unguided   [Total Nilai / 2 ]
 
-[25] Upload hanya template
+- Upload hanya template                                              [25]

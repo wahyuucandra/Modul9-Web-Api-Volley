@@ -50,12 +50,17 @@ public class ViewsMahasiswa extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_views_mahasiswa, container, false);
-        setHasOptionsMenu(true);
 
         setAdapter();
         getMahasiswa();
 
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -80,6 +85,13 @@ public class ViewsMahasiswa extends Fragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.btnSearch).setVisible(true);
+        menu.findItem(R.id.btnAdd).setVisible(true);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -99,8 +111,14 @@ public class ViewsMahasiswa extends Fragment {
         listMahasiswa = new ArrayList<Mahasiswa>();
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter = new AdapterMahasiswa(view.getContext(), listMahasiswa);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),2);
+            recyclerView.setLayoutManager(gridLayoutManager);
+        } else {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
+            recyclerView.setLayoutManager(layoutManager);
+        }
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }

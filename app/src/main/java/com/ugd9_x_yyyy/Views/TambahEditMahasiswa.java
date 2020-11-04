@@ -102,8 +102,10 @@ public class TambahEditMahasiswa extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.btnSearch).setVisible(false);
-        menu.findItem(R.id.btnAdd).setVisible(false);
+        if(menu.findItem(R.id.btnSearch) != null)
+            menu.findItem(R.id.btnSearch).setVisible(false);
+        if(menu.findItem(R.id.btnAdd) != null)
+            menu.findItem(R.id.btnAdd).setVisible(false);
     }
 
     public void setAtribut(View view){

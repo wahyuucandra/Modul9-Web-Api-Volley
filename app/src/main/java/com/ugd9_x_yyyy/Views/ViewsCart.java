@@ -3,6 +3,7 @@ package com.ugd9_x_yyyy.Views;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class ViewsCart extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_views_cart, container, false);
-        setHasOptionsMenu(false);
+
         init();
         setAdapter();
         getTransaksi();
@@ -66,11 +67,23 @@ public class ViewsCart extends Fragment{
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem add    = menu.findItem(R.id.btnAdd);
-        MenuItem search = menu.findItem(R.id.btnSearch);
-        add.setVisible(false);
-        search.setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+        if(menu.findItem(R.id.btnSearch) != null)
+            menu.findItem(R.id.btnSearch).setVisible(false);
+        if(menu.findItem(R.id.btnAdd) != null)
+            menu.findItem(R.id.btnAdd).setVisible(false);
     }
 
     private void init() {

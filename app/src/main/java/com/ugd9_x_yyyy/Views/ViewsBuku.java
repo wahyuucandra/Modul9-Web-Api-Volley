@@ -49,11 +49,16 @@ public class ViewsBuku extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_views_buku, container, false);
-        setHasOptionsMenu(true);
         setAdapter();
         getBuku();
 
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -75,6 +80,13 @@ public class ViewsBuku extends Fragment{
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.btnSearch).setVisible(true);
+        menu.findItem(R.id.btnAdd).setVisible(true);
     }
 
     @Override

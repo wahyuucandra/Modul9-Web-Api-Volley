@@ -115,7 +115,7 @@ public class AdapterDTBuku extends RecyclerView.Adapter<AdapterDTBuku.adapterSub
         holder.harga.setText("Rp "+ formatter.format(dtb.getHarga()));
         holder.jumlah.setText(String.valueOf(dtb.getJumlah()));
         Glide.with(context)
-                .load("https://asdospbp2020.000webhostapp.com/images/"+dtb.getGambar())
+                .load("https://apipbp.ninnanovila.com/public/images/"+dtb.getGambar())
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(holder.gambar);

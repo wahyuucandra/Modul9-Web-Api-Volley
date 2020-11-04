@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.ugd9_x_yyyy.API.BukuAPI;
 import com.ugd9_x_yyyy.Adapters.AdapterBuku;
 import com.ugd9_x_yyyy.Models.Buku;
 import com.ugd9_x_yyyy.R;
@@ -39,7 +40,6 @@ import static com.android.volley.Request.Method.GET;
 
 public class ViewsBuku extends Fragment{
 
-    private final String url = "https://asdospbp2020.000webhostapp.com/api/buku";
     private RecyclerView recyclerView;
     private AdapterBuku adapter;
     private List<Buku> listBuku;
@@ -90,7 +90,6 @@ public class ViewsBuku extends Fragment{
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager .beginTransaction()
                     .replace(R.id.frame_view_buku, tambahEditBuku)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         }
         return super.onOptionsItemSelected(item);
@@ -114,11 +113,9 @@ public class ViewsBuku extends Fragment{
     }
 
     public void getBuku() {
-        // Silahkan buat fungsi menampilkan data Buku disini
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
-        //Meminta tanggapan string dari URL yang telah disediakan menggunakan method GET
-        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, url
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, BukuAPI.URL_SELECT
                 , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

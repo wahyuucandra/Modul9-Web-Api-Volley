@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.ugd9_x_yyyy.API.MahasiswaAPI;
 import com.ugd9_x_yyyy.Adapters.AdapterMahasiswa;
 import com.ugd9_x_yyyy.Models.Mahasiswa;
 import com.ugd9_x_yyyy.R;
@@ -40,8 +41,6 @@ import static com.android.volley.Request.Method.GET;
 
 
 public class ViewsMahasiswa extends Fragment {
-
-    private final String url = "https://asdospbp2020.000webhostapp.com/api/mahasiswa";
     private RecyclerView recyclerView;
     private AdapterMahasiswa adapter;
     private List<Mahasiswa> listMahasiswa;
@@ -100,16 +99,18 @@ public class ViewsMahasiswa extends Fragment {
         listMahasiswa = new ArrayList<Mahasiswa>();
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter = new AdapterMahasiswa(view.getContext(), listMahasiswa);
-        int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
-            recyclerView.setLayoutManager(layoutManager);
-        } else {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),2);
-            recyclerView.setLayoutManager(gridLayoutManager);
-        }
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+    }
+
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_view_mahasiswa,fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     //Fungsi menampilkan data mahasiswa
@@ -126,7 +127,7 @@ public class ViewsMahasiswa extends Fragment {
         progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, url
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, MahasiswaAPI.URL_SELECT
                 , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -174,15 +175,5 @@ public class ViewsMahasiswa extends Fragment {
 
         //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
         queue.add(stringRequest);
-    }
-
-    public void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_view_mahasiswa,fragment)
-                .detach(this)
-                .attach(this)
-                .addToBackStack(null)
-                .commit();
     }
 }

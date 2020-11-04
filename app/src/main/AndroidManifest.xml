@@ -18,8 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Adapters.AdapterDTBuku"></activity>
-        <activity android:name=".Adapters.AdapterTransaksiBuku" />
+        <activity android:name=".Adapters.AdapterDTBuku"
+            tools:ignore="Instantiatable"></activity>
+        <activity android:name=".Adapters.AdapterTransaksiBuku"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".Adapters.AdapterBuku"
             tools:ignore="Instantiatable" />

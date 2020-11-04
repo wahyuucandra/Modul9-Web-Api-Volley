@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.ugd9_x_yyyy.API.TransaksiBukuAPI;
 import com.ugd9_x_yyyy.Adapters.AdapterTransaksiBuku;
 import com.ugd9_x_yyyy.Models.DTBuku;
 import com.ugd9_x_yyyy.Models.TransaksiBuku;
@@ -41,7 +42,6 @@ import static com.android.volley.Request.Method.GET;
 
 public class ViewsCart extends Fragment{
 
-    private final String url = "https://asdospbp2020.000webhostapp.com/api/transaksiBuku";
     private RecyclerView recyclerView;
     private TextView tvTotalBiaya;
     private Button btnBayar;
@@ -155,7 +155,7 @@ public class ViewsCart extends Fragment{
     public void getTransaksi() {
         final RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
-        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, url
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, TransaksiBukuAPI.URL_SELECT
                 , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

@@ -117,8 +117,9 @@ public class MainActivity extends AppCompatActivity {
     public void loadFragment(Fragment fragment) {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.mainFragment,fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction
+                .replace(R.id.mainFragment,fragment)
+                .commit();
     }
 
     private void closeDrawer() {

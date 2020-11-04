@@ -29,6 +29,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.ugd9_x_yyyy.API.BukuAPI;
 import com.ugd9_x_yyyy.Models.Buku;
 import com.ugd9_x_yyyy.R;
 import com.ugd9_x_yyyy.Views.TambahEditBuku;
@@ -46,7 +47,6 @@ import static com.android.volley.Request.Method.POST;
 
 public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuViewHolder> {
 
-    private final String url = "https://asdospbp2020.000webhostapp.com/api/buku";
     private List<Buku> bukuList;
     private List<Buku> bukuListFiltered;
     private Context context;
@@ -75,7 +75,7 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
         holder.txtPengarang.setText(buku.getPengarang());
         holder.txtHarga.setText("Rp "+ formatter.format(buku.getHarga()));
         Glide.with(context)
-                .load("https://asdospbp2020.000webhostapp.com/images/"+buku.getGambar())
+                .load(BukuAPI.URL_IMAGE+buku.getGambar())
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(holder.ivGambar);
@@ -102,7 +102,6 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         deleteBuku(buku.getIdBuku());
-
                     }
                 });
                 builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
@@ -178,9 +177,7 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
     }
 
     public void deleteBuku(int idBuku){
-        //Silahkan buat fungsi hapus disini
         RequestQueue queue = Volley.newRequestQueue(context);
-        String urlDelete = "https://asdospbp2020.000webhostapp.com/api/buku/delete/" + idBuku;
 
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(context);
@@ -189,7 +186,7 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
         progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
         //Meminta
-        StringRequest stringRequest = new StringRequest(POST, urlDelete, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_DELETE+idBuku, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();

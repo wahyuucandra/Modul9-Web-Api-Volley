@@ -38,6 +38,8 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputEditText;
+import com.ugd9_x_yyyy.API.BukuAPI;
+import com.ugd9_x_yyyy.API.MahasiswaAPI;
 import com.ugd9_x_yyyy.Models.Buku;
 import com.ugd9_x_yyyy.R;
 
@@ -58,7 +60,6 @@ import static com.android.volley.Request.Method.POST;
 
 public class TambahEditBuku extends Fragment {
 
-    private final String url = "https://asdospbp2020.000webhostapp.com/api/buku";
     private TextInputEditText txtNamaBuku, txtNamaPengarang, txtHarga;
     private ImageView ivGambar;
     private Button btnSimpan, btnBatal, btnUnggah;
@@ -70,17 +71,32 @@ public class TambahEditBuku extends Fragment {
     private Uri selectedImage = null;
     private static final int PERMISSION_CODE = 1000;
 
-    public TambahEditBuku(){}
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tambah_edit_buku, container, false);
-        setHasOptionsMenu(true);
         init();
         setAttribut();
 
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.btnSearch).setVisible(false);
+        menu.findItem(R.id.btnAdd).setVisible(false);
     }
 
     public void init(){
@@ -99,9 +115,9 @@ public class TambahEditBuku extends Fragment {
             idBuku = buku.getIdBuku();
             txtNamaBuku.setText(buku.getNamaBuku());
             txtNamaPengarang.setText(buku.getPengarang());
-            txtHarga.setText(String.valueOf(buku.getHarga()));
+            txtHarga.setText(String.valueOf(Math.round(buku.getHarga())));
             Glide.with(view.getContext())
-                    .load("https://asdospbp2020.000webhostapp.com/images/"+buku.getGambar())
+                    .load(BukuAPI.URL_IMAGE +buku.getGambar())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(ivGambar);
@@ -191,7 +207,7 @@ public class TambahEditBuku extends Fragment {
         btnBatal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeFragment();
+                loadFragment(new ViewsBuku());
             }
         });
     }
@@ -233,31 +249,37 @@ public class TambahEditBuku extends Fragment {
             try {
                 InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                ivGambar.setImageBitmap(bitmap);
             } catch (Exception e) {
                 Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
+            ivGambar.setImageBitmap(bitmap);
+            bitmap = getResizedBitmap(bitmap, 512);
         }
         else if(resultCode == RESULT_OK && requestCode == 2)
         {
             Bundle extras = data.getExtras();
             bitmap = (Bitmap) extras.get("data");
             ivGambar.setImageBitmap(bitmap);
+            bitmap = getResizedBitmap(bitmap, 512);
         }
-        bitmap = getResizedBitmap(bitmap, 200);
-    }
-
-    public void closeFragment(){
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.hide(TambahEditBuku.this).commit();
     }
 
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_tambah_edit_buku,fragment)
-                .addToBackStack(null)
+        if (Build.VERSION.SDK_INT >= 26) {
+            fragmentTransaction.setReorderingAllowed(false);
+        }
+        fragmentTransaction.replace(R.id.frame_tambah_edit_buku, fragment)
+                .detach(this)
+                .attach(this)
                 .commit();
+    }
+
+    public void closeFragment(){
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.hide(TambahEditBuku.this).detach(this)
+                .attach(this).commit();
     }
 
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
@@ -276,7 +298,6 @@ public class TambahEditBuku extends Fragment {
     }
 
     private String imageToString(Bitmap bitmap){
-        //Carilah fungsi yang digunakan untuk mengubah data image menjadi string mengunakan base64
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
         byte[] imageBytes = outputStream.toByteArray();
@@ -286,7 +307,6 @@ public class TambahEditBuku extends Fragment {
     }
 
     public void tambahBuku(final Buku buku){
-        //Silahkan buat fungsi tambah buku disini
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         final ProgressDialog progressDialog;
@@ -296,7 +316,7 @@ public class TambahEditBuku extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_ADD, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
@@ -306,6 +326,7 @@ public class TambahEditBuku extends Fragment {
                     {
                         loadFragment(new ViewsBuku());
                     }
+
                     Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -328,10 +349,8 @@ public class TambahEditBuku extends Fragment {
 
                 if(bitmap != null){
                     String imageData = imageToString(bitmap);
-                    System.out.println(imageData);
                     params.put("gambar", imageData);
                 }
-
 
                 return params;
             }
@@ -341,9 +360,7 @@ public class TambahEditBuku extends Fragment {
     }
 
     public void editBuku(final Buku buku, int idBuku) {
-        //Silahkan buat fungsi edit buku disini
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String urlUpdate = url + "/update/" + idBuku;
 
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(getContext());
@@ -352,7 +369,7 @@ public class TambahEditBuku extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(POST, urlUpdate, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATE+idBuku, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();

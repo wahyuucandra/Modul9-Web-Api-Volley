@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="#6200EA"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
         <CheckBox
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:background="#6200EA"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:textColor="#FBF9F9" />
 
@@ -30,7 +30,7 @@
             android:id="@+id/tvNamaMahasiswa"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#6200EA"
+            android:background="@color/colorPrimary"
             android:drawableLeft="@drawable/ic_baseline_store_24"
             android:drawablePadding="10dp"
             android:drawableTint="#FFFFFF"
@@ -46,14 +46,14 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F1EEEE" />
+        android:background="#BADEF4" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/panelBayar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
-        app:cardBackgroundColor="#6200EA">
+        app:cardBackgroundColor="@color/colorPrimary">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -5,23 +5,27 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="#FFD600"
+    android:foregroundTint="#FF6D00"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <include
+        layout="@layout/content_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/content_main"/>
+        android:layout_height="match_parent" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/NavigatioView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:backgroundTint="@android:color/background_light"
+        android:backgroundTint="#FFFFFF"
         android:fadeScrollbars="true"
         app:headerLayout="@layout/header"
+        app:itemIconTint="@color/colorPrimary"
+        app:itemTextColor="#0091EA"
         app:menu="@menu/drawersmenu">
 
     </com.google.android.material.navigation.NavigationView>

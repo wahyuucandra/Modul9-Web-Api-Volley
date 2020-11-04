@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardBuku"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="5dp"
@@ -11,7 +11,7 @@
     tools:context=".Adapters.AdapterBuku">
 
     <com.guanaj.easyswipemenulibrary.EasySwipeMenuLayout
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="250dp"
         app:contentView="@+id/content"
         app:rightMenuView="@+id/right">
@@ -24,7 +24,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
@@ -87,33 +87,31 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/ivEdit"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="125dp"
-                    android:background="@android:color/holo_orange_dark"
+                    android:background="#2962FF"
                     android:drawableTint="#FFFFFF"
-                    android:gravity="center_vertical"
+                    android:gravity="center|center_horizontal|center_vertical"
                     android:text="Edit"
-                    android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/ivHapus"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="125dp"
                     android:background="@android:color/holo_red_dark"
                     android:drawableTint="#FFFFFF"
-                    android:gravity="center_vertical"
+                    android:gravity="center|center_horizontal|center_vertical"
                     android:text="Hapus"
-                    android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />

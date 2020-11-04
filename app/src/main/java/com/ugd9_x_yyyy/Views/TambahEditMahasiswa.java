@@ -1,6 +1,7 @@
 package com.ugd9_x_yyyy.Views;
 
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.ugd9_x_yyyy.API.MahasiswaAPI;
 import com.ugd9_x_yyyy.Models.Mahasiswa;
 import com.ugd9_x_yyyy.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -40,8 +43,6 @@ import static com.android.volley.Request.Method.POST;
 
 
 public class TambahEditMahasiswa extends Fragment {
-
-    private final String url = "https://asdospbp2020.000webhostapp.com/api/mahasiswa";
     private TextInputEditText txtNpm, txtNama;
     private ImageView ivGambar;
     private Button btnSimpan, btnBatal;
@@ -52,7 +53,6 @@ public class TambahEditMahasiswa extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tambah_edit_mahasiswa, container, false);
-        setHasOptionsMenu(true);
         setAtribut(view);
 
         btnSimpan.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +86,24 @@ public class TambahEditMahasiswa extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.btnSearch).setVisible(false);
+        menu.findItem(R.id.btnAdd).setVisible(false);
     }
 
     public void setAtribut(View view){
@@ -158,6 +176,24 @@ public class TambahEditMahasiswa extends Fragment {
         });
     }
 
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            fragmentTransaction.setReorderingAllowed(false);
+        }
+        fragmentTransaction.replace(R.id.frame_tambah_edit_mahasiswa, fragment)
+                .detach(this)
+                .attach(this)
+                .commit();
+    }
+
+    public void closeFragment(){
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.hide(TambahEditMahasiswa.this).detach(this)
+                .attach(this).commit();
+    }
+
    /*
         Fungsi ini digunakan untuk menambahkan data mahasiswa dengan butuh 4 parameter key yang
         diperlukan (npm, nama, jenis_kelamin dan prodi) untuk parameter ini harus sama namanya
@@ -175,7 +211,7 @@ public class TambahEditMahasiswa extends Fragment {
         progressDialog.show();
 
         //Memulai membuat permintaan request menghapus data ke jaringan
-        StringRequest stringRequest = new StringRequest(POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(POST, MahasiswaAPI.URL_ADD, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
@@ -234,9 +270,6 @@ public class TambahEditMahasiswa extends Fragment {
         //Pendeklarasian queue
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
-        //url ini digunakan untuk mengubah data mahasiswa berdasarkan npmnya
-        String updateURL = url + "/update/" + npm;
-
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("loading....");
@@ -245,7 +278,7 @@ public class TambahEditMahasiswa extends Fragment {
         progressDialog.show();
 
         //Memulai membuat permintaan request menghapus data ke jaringan
-        StringRequest  stringRequest = new StringRequest(POST, updateURL, new Response.Listener<String>() {
+        StringRequest  stringRequest = new StringRequest(POST, MahasiswaAPI.URL_UPDATE + npm, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
@@ -291,16 +324,4 @@ public class TambahEditMahasiswa extends Fragment {
         queue.add(stringRequest);
     }
 
-    public void closeFragment(){
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.hide(TambahEditMahasiswa.this).commit();
-    }
-
-    public void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_tambah_edit_mahasiswa,fragment)
-                .addToBackStack(null)
-                .commit();
-    }
 }

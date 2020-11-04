@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.ugd9_x_yyyy.API.MahasiswaAPI;
 import com.ugd9_x_yyyy.Models.Mahasiswa;
 import com.ugd9_x_yyyy.R;
 import com.ugd9_x_yyyy.Views.TambahEditMahasiswa;
@@ -170,9 +171,6 @@ public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adap
         //Pendeklarasian queue
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        //url ini digunakan untuk menghapus mahasiswa berdasarkan npmnya
-        String urlDelete = "https://asdospbp2020.000webhostapp.com/api/mahasiswa/delete/" + npm;
-
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("loading....");
@@ -181,7 +179,7 @@ public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adap
         progressDialog.show();
 
         //Memulai membuat permintaan request menghapus data ke jaringan
-        StringRequest stringRequest = new StringRequest(POST, urlDelete, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(POST, MahasiswaAPI.URL_DELETE + npm, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error

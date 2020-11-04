@@ -28,3 +28,5 @@ Minus :
 [-100] Jika tidak mengumpul di sitkul atau mencontek teman	
 
 [Total Nilai / 2 ] Jika tidak melakukan video call / demo untuk pengecekan Unguided
+
+[25] Upload hanya template

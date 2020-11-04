@@ -27,4 +27,4 @@ Minus :
 
 [-100] Jika tidak mengumpul di sitkul atau mencontek teman	
 
-[Max Nilai / 2 ] Jika tidak melakukan video call / demo untuk pengecekan Unguided
+[Total Nilai / 2 ] Jika tidak melakukan video call / demo untuk pengecekan Unguided

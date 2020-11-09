@@ -12,5 +12,3 @@ Minus :
 [-100] Jika tidak mengumpul di sitkul atau mencontek teman 
 
 [-60 ] Jika tidak melakukan video call / demo untuk pengecekan Guided
-
-- Salah format : bagian string.h tidak ganti nama(Total-5) , bagian nama repository tidak sesuai format (Total -5).

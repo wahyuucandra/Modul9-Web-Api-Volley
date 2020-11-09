@@ -4,7 +4,7 @@ Penilaian Unguided
 
 1. Tampil Buku	
    - Lancar [15]	
-   - Error [5]	
+   - Error [7,5]	
 2. Tambah Buku	
    - Lancar + upload gambar  [30]	
    - Lancar + tanpa upload gambar [20]	
@@ -15,7 +15,7 @@ Penilaian Unguided
    - Error [10]	
 4. Hapus Buku	
    - Lancar [15]	
-   - Error [5]	
+   - Error [7,5]	
 5. Tampil Transaksi Buku	
    - Lancar [20]	
    - Error [10]	

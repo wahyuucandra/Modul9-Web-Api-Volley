@@ -43,6 +43,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.android.volley.Request.Method.DELETE;
 import static com.android.volley.Request.Method.POST;
 
 public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuViewHolder> {
@@ -51,11 +52,14 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
     private List<Buku> bukuListFiltered;
     private Context context;
     private View view;
+    private AdapterBuku.deleteItemListener mListener;
 
-    public AdapterBuku(Context context, List<Buku> bukuList) {
+    public AdapterBuku(Context context, List<Buku> bukuList,
+                       AdapterBuku.deleteItemListener mListener) {
         this.context            = context;
         this.bukuList           = bukuList;
         this.bukuListFiltered   = bukuList;
+        this.mListener          = mListener;
     }
 
     @NonNull
@@ -176,9 +180,11 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
                 .commit();
     }
 
-    public void deleteBuku(int idBuku){
-        RequestQueue queue = Volley.newRequestQueue(context);
+    public interface deleteItemListener {
+        void deleteItem( Boolean delete);
+    }
 
+    public void deleteBuku(int idBuku){
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("loading....");
@@ -186,7 +192,7 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
         progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
         //Meminta
-        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_DELETE+idBuku, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(DELETE, BukuAPI.URL_DELETE+idBuku, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
@@ -194,7 +200,7 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
                     JSONObject obj = new JSONObject(response);
                     Toast.makeText(context, obj.getString("message"), Toast.LENGTH_SHORT).show();
                     notifyDataSetChanged();
-                    loadFragment(new ViewsBuku());
+                    mListener.deleteItem(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -207,6 +213,7 @@ public class AdapterBuku extends RecyclerView.Adapter<AdapterBuku.adapterBukuVie
             }
         });
 
+        RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
     }
 }

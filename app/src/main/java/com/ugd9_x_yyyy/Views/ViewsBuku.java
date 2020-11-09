@@ -49,9 +49,8 @@ public class ViewsBuku extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_views_buku, container, false);
-        setAdapter();
-        getBuku();
 
+        loadDaftarBuku();
         return view;
     }
 
@@ -107,11 +106,23 @@ public class ViewsBuku extends Fragment{
         return super.onOptionsItemSelected(item);
     }
 
+    public void loadDaftarBuku(){
+        setAdapter();
+        getBuku();
+    }
+
     public void setAdapter(){
         getActivity().setTitle("Data Buku");
         listBuku = new ArrayList<Buku>();
         recyclerView = view.findViewById(R.id.recycler_view);
-        adapter = new AdapterBuku(view.getContext(), listBuku);
+        adapter = new AdapterBuku(view.getContext(), listBuku, new AdapterBuku.deleteItemListener() {
+            @Override
+            public void deleteItem(Boolean delete) {
+                if(delete){
+                    loadDaftarBuku();
+                }
+            }
+        });
         GridLayoutManager gridLayoutManager;
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -125,8 +136,6 @@ public class ViewsBuku extends Fragment{
     }
 
     public void getBuku() {
-        RequestQueue queue = Volley.newRequestQueue(view.getContext());
-
         final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, BukuAPI.URL_SELECT
                 , null, new Response.Listener<JSONObject>() {
             @Override
@@ -165,6 +174,7 @@ public class ViewsBuku extends Fragment{
             }
         });
 
+        RequestQueue queue = Volley.newRequestQueue(view.getContext());
         queue.add(stringRequest);
     }
 }

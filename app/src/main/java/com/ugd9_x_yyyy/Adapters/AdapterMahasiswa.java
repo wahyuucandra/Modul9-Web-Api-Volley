@@ -39,7 +39,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.DELETE;
 
 public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adapterUserViewHolder> {
 
@@ -47,11 +47,14 @@ public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adap
     private List<Mahasiswa> mahasiswaListFiltered;
     private Context context;
     private View view;
+    private AdapterMahasiswa.deleteItemListener mListener;
 
-    public AdapterMahasiswa(Context context, List<Mahasiswa> mahasiswaList) {
+    public AdapterMahasiswa(Context context, List<Mahasiswa> mahasiswaList,
+                            AdapterMahasiswa.deleteItemListener mListener) {
         this.context=context;
         this.mahasiswaList = mahasiswaList;
         this.mahasiswaListFiltered = mahasiswaList;
+        this.mListener = mListener;
     }
 
     @NonNull
@@ -166,11 +169,11 @@ public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adap
         };
     }
 
-    //Fungsi menghapus data mahasiswa
-    public void deleteMahasiswa(String npm){
-        //Pendeklarasian queue
-        RequestQueue queue = Volley.newRequestQueue(context);
+    public interface deleteItemListener {
+        void deleteItem( Boolean delete);
+    }
 
+    public void deleteMahasiswa(String npm){
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("loading....");
@@ -178,16 +181,12 @@ public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adap
         progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        //Memulai membuat permintaan request menghapus data ke jaringan
-        StringRequest stringRequest = new StringRequest(POST, MahasiswaAPI.URL_DELETE + npm, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(DELETE, MahasiswaAPI.URL_DELETE + npm, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
                 progressDialog.dismiss();
                 try {
-                    //Mengubah response string menjadi object
                     JSONObject obj = new JSONObject(response);
-                    //obj.getString("message") digunakan untuk mengambil pesan message dari response
                     Toast.makeText(context, obj.getString("message"), Toast.LENGTH_SHORT).show();
                     notifyDataSetChanged();
                     loadFragment(new ViewsMahasiswa());
@@ -198,13 +197,12 @@ public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adap
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Disini bagian jika response jaringan terdapat ganguan/error
                 progressDialog.dismiss();
                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
-        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+        RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(stringRequest);
     }
 
@@ -213,7 +211,6 @@ public class AdapterMahasiswa extends RecyclerView.Adapter<AdapterMahasiswa.adap
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_view_mahasiswa,fragment)
-                .addToBackStack(null)
                 .commit();
     }
 }

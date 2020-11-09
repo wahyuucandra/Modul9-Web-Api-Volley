@@ -166,8 +166,6 @@ public class ViewsCart extends Fragment{
     }
 
     public void getTransaksi() {
-        final RequestQueue queue = Volley.newRequestQueue(view.getContext());
-
         final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, TransaksiBukuAPI.URL_SELECT
                 , null, new Response.Listener<JSONObject>() {
             @Override
@@ -229,6 +227,7 @@ public class ViewsCart extends Fragment{
             }
         });
 
+        RequestQueue queue = Volley.newRequestQueue(view.getContext());
         queue.add(stringRequest);
     }
 }

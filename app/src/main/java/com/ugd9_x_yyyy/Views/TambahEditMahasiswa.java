@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 
 
 public class TambahEditMahasiswa extends Fragment {
@@ -196,15 +197,7 @@ public class TambahEditMahasiswa extends Fragment {
                 .attach(this).commit();
     }
 
-   /*
-        Fungsi ini digunakan untuk menambahkan data mahasiswa dengan butuh 4 parameter key yang
-        diperlukan (npm, nama, jenis_kelamin dan prodi) untuk parameter ini harus sama namanya
-        dan hal ini dapat dilihat pada fungsi getParams
-    */
     public void tambahMahasiswa(final String npm, final String nama, final String jk, final String prodi){
-        //Pendeklarasian queue
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("loading....");
@@ -212,22 +205,15 @@ public class TambahEditMahasiswa extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        //Memulai membuat permintaan request menghapus data ke jaringan
         StringRequest stringRequest = new StringRequest(POST, MahasiswaAPI.URL_ADD, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
                 progressDialog.dismiss();
                 try {
-                    //Mengubah response string menjadi object
                     JSONObject obj = new JSONObject(response);
-                    //obj.getString("message") digunakan untuk mengambil pesan status dari response
                     if(obj.getString("status").equals("Success"))
-                    {
                         loadFragment(new ViewsMahasiswa());
-                    }
 
-                    //obj.getString("message") digunakan untuk mengambil pesan message dari response
                     Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -236,7 +222,6 @@ public class TambahEditMahasiswa extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Disini bagian jika response jaringan terdapat ganguan/error
                 progressDialog.dismiss();
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -244,11 +229,6 @@ public class TambahEditMahasiswa extends Fragment {
             @Override
             protected Map<String, String> getParams()
             {
-                /*
-                    Disini adalah proses memasukan/mengirimkan parameter key dengan data value,
-                    dan nama key nya harus sesuai dengan parameter key yang diminta oleh jaringan
-                    API.
-                */
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("npm", npm);
                 params.put("nama", nama);
@@ -259,19 +239,11 @@ public class TambahEditMahasiswa extends Fragment {
             }
         };
 
-        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+        RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(stringRequest);
     }
 
-    /*
-        Fungsi ini digunakan untuk mengubah data mahasiswa dengan butuh 3 parameter key yang
-        diperlukan (nama, jenis_kelamin dan prodi) untuk parameter ini harus sama namanya
-        dan hal ini dapat dilihat pada fungsi getParams
-    */
     public void editMahasiswa(final String npm, final String nama, final String jk, final String prodi){
-        //Pendeklarasian queue
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("loading....");
@@ -279,17 +251,12 @@ public class TambahEditMahasiswa extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        //Memulai membuat permintaan request menghapus data ke jaringan
-        StringRequest  stringRequest = new StringRequest(POST, MahasiswaAPI.URL_UPDATE + npm, new Response.Listener<String>() {
+        StringRequest  stringRequest = new StringRequest(PUT, MahasiswaAPI.URL_UPDATE + npm, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
                 progressDialog.dismiss();
                 try {
-                    //Mengubah response string menjadi object
                     JSONObject obj = new JSONObject(response);
-
-                    //obj.getString("message") digunakan untuk mengambil pesan message dari response
                     Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
 
                     loadFragment(new ViewsMahasiswa());
@@ -300,7 +267,6 @@ public class TambahEditMahasiswa extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Disini bagian jika response jaringan terdapat ganguan/error
                 progressDialog.dismiss();
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -308,11 +274,6 @@ public class TambahEditMahasiswa extends Fragment {
             @Override
             protected Map<String, String> getParams()
             {
-                /*
-                    Disini adalah proses memasukan/mengirimkan parameter key dengan data value,
-                    dan nama key nya harus sesuai dengan parameter key yang diminta oleh jaringan
-                    API.
-                */
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("nama", nama);
                 params.put("prodi", prodi);
@@ -322,7 +283,7 @@ public class TambahEditMahasiswa extends Fragment {
             }
         };
 
-        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+        RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(stringRequest);
     }
 

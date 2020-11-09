@@ -56,6 +56,7 @@ import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 
 
 public class TambahEditBuku extends Fragment {
@@ -309,8 +310,6 @@ public class TambahEditBuku extends Fragment {
     }
 
     public void tambahBuku(final Buku buku){
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("loading....");
@@ -358,12 +357,11 @@ public class TambahEditBuku extends Fragment {
             }
         };
 
+        RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(stringRequest);
     }
 
     public void editBuku(final Buku buku, int idBuku) {
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("loading....");
@@ -371,7 +369,7 @@ public class TambahEditBuku extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATE+idBuku, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(PUT, BukuAPI.URL_UPDATE+idBuku, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
@@ -411,6 +409,7 @@ public class TambahEditBuku extends Fragment {
             }
         };
 
+        RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(stringRequest);
     }
 }

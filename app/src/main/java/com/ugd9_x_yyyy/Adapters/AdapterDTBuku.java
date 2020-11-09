@@ -32,6 +32,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.ugd9_x_yyyy.API.BukuAPI;
 import com.ugd9_x_yyyy.Models.DTBuku;
 import com.ugd9_x_yyyy.R;
 import com.ugd9_x_yyyy.Views.ViewsCart;
@@ -115,7 +116,7 @@ public class AdapterDTBuku extends RecyclerView.Adapter<AdapterDTBuku.adapterSub
         holder.harga.setText("Rp "+ formatter.format(dtb.getHarga()));
         holder.jumlah.setText(String.valueOf(dtb.getJumlah()));
         Glide.with(context)
-                .load("https://apipbp.ninnanovila.com/public/images/"+dtb.getGambar())
+                .load(BukuAPI.URL_IMAGE +dtb.getGambar())
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(holder.gambar);

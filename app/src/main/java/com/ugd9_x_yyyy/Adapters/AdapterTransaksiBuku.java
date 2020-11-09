@@ -3,11 +3,13 @@ package com.ugd9_x_yyyy.Adapters;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,11 +102,6 @@ public class AdapterTransaksiBuku extends RecyclerView.Adapter<AdapterTransaksiB
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-                holder.recyclerView.getContext(),
-                LinearLayoutManager.VERTICAL,
-                false
-        );
         adapterDTBuku = new AdapterDTBuku(view.getContext(),
                 transaksiBuku.getDtBukuList(), new AdapterDTBuku.OnQuantityChangeListener() {
             @Override
@@ -129,7 +126,14 @@ public class AdapterTransaksiBuku extends RecyclerView.Adapter<AdapterTransaksiB
                         isEmptyChecked());
             }
         });
-        holder.recyclerView.setLayoutManager(layoutManager);
+        int orientation = view.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),2);
+            holder.recyclerView.setLayoutManager(gridLayoutManager);
+        } else {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
+            holder.recyclerView.setLayoutManager(layoutManager);
+        }
         holder.recyclerView.setItemAnimator(new DefaultItemAnimator());
         holder.recyclerView.setAdapter(adapterDTBuku);
     }

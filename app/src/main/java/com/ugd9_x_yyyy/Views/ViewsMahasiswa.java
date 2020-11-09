@@ -51,9 +51,7 @@ public class ViewsMahasiswa extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_views_mahasiswa, container, false);
 
-        setAdapter();
-        getMahasiswa();
-
+        loadDaftarMahasiswa();
         return view;
     }
 
@@ -106,11 +104,23 @@ public class ViewsMahasiswa extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public void loadDaftarMahasiswa(){
+        setAdapter();
+        getMahasiswa();
+    }
+
     public void setAdapter(){
         getActivity().setTitle("Data Mahasiswa");
         listMahasiswa = new ArrayList<Mahasiswa>();
         recyclerView = view.findViewById(R.id.recycler_view);
-        adapter = new AdapterMahasiswa(view.getContext(), listMahasiswa);
+        adapter = new AdapterMahasiswa(view.getContext(), listMahasiswa, new AdapterMahasiswa.deleteItemListener() {
+            @Override
+            public void deleteItem(Boolean delete) {
+                if(delete){
+                    loadDaftarMahasiswa();
+                }
+            }
+        });
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(),2);
@@ -131,35 +141,18 @@ public class ViewsMahasiswa extends Fragment {
                 .commit();
     }
 
-    //Fungsi menampilkan data mahasiswa
     public void getMahasiswa() {
-        //Pendeklarasian queue
-        RequestQueue queue = Volley.newRequestQueue(view.getContext());
-
-        //Meminta tanggapan string dari URL yang telah disediakan menggunakan method GET
-        //untuk request ini tidak memerlukan parameter
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(view.getContext());
-        progressDialog.setMessage("loading....");
-        progressDialog.setTitle("Menampilkan data mahasiswa");
-        progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
-
         final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, MahasiswaAPI.URL_SELECT
                 , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
-                progressDialog.dismiss();
                 try {
-                    //Mengambil data response json object yang berupa data mahasiswa
                     JSONArray jsonArray = response.getJSONArray("mahasiswa");
 
                     if(!listMahasiswa.isEmpty())
                         listMahasiswa.clear();
 
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        //Mengubah data jsonArray tertentu menjadi json Object
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
                         String npm              = jsonObject.optString("npm");
@@ -167,11 +160,7 @@ public class ViewsMahasiswa extends Fragment {
                         String jenis_kelamin    = jsonObject.optString("jenis_kelamin");
                         String prodi            = jsonObject.optString("prodi");
                         String gambar           = jsonObject.optString("gambar");
-
-                        //Membuat objek user
                         Mahasiswa mahasiswa = new Mahasiswa(npm, nama, jenis_kelamin, prodi, gambar);
-
-                        //Menambahkan objek user tadi ke list user
                         listMahasiswa.add(mahasiswa);
                     }
                     adapter.notifyDataSetChanged();
@@ -184,14 +173,12 @@ public class ViewsMahasiswa extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Disini bagian jika response jaringan terdapat ganguan/error
-                progressDialog.dismiss();
                 Toast.makeText(view.getContext(), error.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });
 
-        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+        RequestQueue queue = Volley.newRequestQueue(view.getContext());
         queue.add(stringRequest);
     }
 }

@@ -30,5 +30,3 @@ Minus :
 - Jika tidak melakukan video call / demo untuk pengecekan Unguided   [Total Nilai / 2 ]
 
 - Upload hanya template                                              [25]
-
-- Salah format : bagian string.h tidak ganti nama(Total-5) , bagian nama repository tidak sesuai format (Total -5).

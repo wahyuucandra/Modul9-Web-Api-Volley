@@ -69,32 +69,44 @@ class BukuController extends Controller
             $buku->namaBuku     = $request['namaBuku'];
             $buku->pengarang    = $request['pengarang'];
             $buku->harga        = $request['harga'];
-
-            if($request['gambar'] != ''){
-                $path = base_path('public_html/images/');
-                $target = $path . $buku->gambar;
-                
-                if(file_exists($target))
-                    unlink($target);
-                $buku->gambar= $this->saveBase64ToImage($request['gambar']);
-            }
-
-            try{
-                $success = $buku->save();
-                $status = 200;
+            
+            if($buku->idBuku  <=4 )
+            {
+                $status=200;
                 $response = [
-                    'status' => 'Success',
-                    'dataBuku' => $buku,
-                    'message' => 'Ubah data Buku berhasil.'
-                ];   
-            }
-            catch(\Illuminate\Database\QueryException $e){
-                $status = 500;
-                $response = [
-                    'status' => 'Error',
+                    'status' => 'Warning',
                     'dataBuku' => [],
-                    'message' => $e
+                    'message' => 'Cie mau diedit ya, ndak boleh ya.'
                 ];
+            }
+            else
+            {
+                if($request['gambar'] != ''){
+                    $path = '/home/u7929630/public_html/pbp/images/';
+                    $target = $path . $buku->gambar;
+                    
+                    if(file_exists($target) && $buku->gambar != "default.jpg")
+                        unlink($target);
+                    $buku->gambar= $this->saveBase64ToImage($request['gambar']);
+                }
+    
+                try{
+                    $success = $buku->save();
+                    $status = 200;
+                    $response = [
+                        'status' => 'Success',
+                        'dataBuku' => $buku,
+                        'message' => 'Ubah data Buku berhasil.'
+                    ];   
+                }
+                catch(\Illuminate\Database\QueryException $e){
+                    $status = 500;
+                    $response = [
+                        'status' => 'Error',
+                        'dataBuku' => [],
+                        'message' => $e
+                    ];
+                }
             }
         }
         return response()->json($response,$status); 
@@ -114,28 +126,40 @@ class BukuController extends Controller
         }
         else
         {
-            if($buku->gambar != "default.jpg")
+            if($buku->idBuku  <=4 )
             {
-                $path = base_path('public_html/images/');
-                $target = $path . $buku->gambar;
-                
-                if(file_exists($target))
-                    unlink($target);
+                $status=200;
+                $response = [
+                    'status' => 'Warning',
+                    'dataBuku' => [],
+                    'message' => 'Cie mau dihapus ya, ndak boleh ya.'
+                ];
             }
-                
-            $buku->delete();
-            $status=200;
-            $response = [
-                'status' => 'Success',
-                'dataBuku' => $buku,
-                'message' => 'Hapus data Buku berhasil.'
-            ]; 
+            else
+            {
+                if($buku->gambar != "default.jpg")
+                {
+                    $path = '/home/u7929630/public_html/pbp/images/';
+                    $target = $path . $buku->gambar;
+                    
+                    if(file_exists($target))
+                        unlink($target);
+                }
+                    
+                $buku->delete();
+                $status=200;
+                $response = [
+                    'status' => 'Success',
+                    'dataBuku' => $buku,
+                    'message' => 'Hapus data Buku berhasil.'
+                ]; 
+            }
         }
         return response()->json($response,$status); 
     }
 
     function saveBase64ToImage($image) {
-        $path = base_path('public_html/images/');
+        $path = '/home/u7929630/public_html/pbp/images/';
         $base = $image;
         $binary = base64_decode($base);
         header('Content-Type: bitmap; charset=utf-8');
